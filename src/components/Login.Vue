@@ -4,13 +4,13 @@
 </template>
 
 <script>
-import firebase from '../firebase.js';
+import { app } from '../firebase.js';
 
 export default {
   methods: {
     signInWithGoogle() {
       var authProvider = new firebase.auth.GoogleAuthProvider();
-      return firebase.auth().signInWithPopup(authProvider)
+      return app.auth().signInWithPopup(authProvider);
     }
   }
 };
@@ -19,7 +19,7 @@ export default {
 <style language="scss">
 .login-button {
   padding: 20px 36px;
-  font-size: 2rem;
+  font-size: 1.2rem;
   position: fixed;
   top: 50%;
   left: 50%;

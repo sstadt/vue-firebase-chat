@@ -1,5 +1,7 @@
 
-import firebase from 'firebase';
+import firebase from 'firebase/app';
+import 'firebase/auth';
+import 'firebase/database';
 
 var config = {
   apiKey: "AIzaSyCE_UcyTwnq0nCknK5Ew4rERStQe3Z1qCY",
@@ -10,8 +12,9 @@ var config = {
   messagingSenderId: "175017321265"
 };
 
-firebase.initializeApp(config);
+var app = firebase.initializeApp(config);
+var db = app.database();
+var firebaseRef = db.ref();
+var chatRef = firebaseRef.child('chat');
 
-var firebaseRef = firebase.database().ref();
-export default firebase;
-export var chatRef = firebaseRef.child('chat');
+export { app, db, chatRef };

@@ -21,50 +21,46 @@
 </template>
 
 <script>
-import firebase, { chatRef } from '../firebase';
+import { app, chatRef } from '../firebase';
 
 export default {
   data() {
     return {
-      comment: '',
       newMessage: '',
       loading: true
     };
   },
   firebase: {
     // can bind to either a direct Firebase reference or a query
-    messages: chatRef,
+    anArray: chatRef,
     // optionally provide the cancelCallback
-    cancelCallback: function () {
-    },
+    cancelCallback: function () { },
     // this is called once the data has been retrieved from firebase
-    readyCallback: function () {
-    }
+    readyCallback: function () { }
   },
   methods: {
     logOut() {
-      firebase.auth().signOut();
+      app.auth().signOut();
     },
     addComment() {
       if (this.newMessage !== '') {
-        this.comment = this.newMessage.trim();
         chatRef.push({
-          message: this.comment,
+          message: this.newMessage.trim(),
           name: this.getUserName(),
           userId: this.getUserId(),
-          photo_url:this.getPhotoURL()
+          photo_url: this.getPhotoURL()
         });
         this.newMessage = "";
       }
     },
     getUserId() {
-      return firebase.auth().currentUser.uid;
+      return app.auth().currentUser.uid;
     },
     getUserName() {
-      return firebase.auth().currentUser.displayName;
+      return app.auth().currentUser.displayName;
     },
     getPhotoURL() {
-      return firebase.auth().currentUser.photoURL;
+      return app.auth().currentUser.photoURL;
     }
   }
 }
