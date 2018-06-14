@@ -1,0 +1,32 @@
+
+<template>
+  <button class="login-button" @click="signInWithGoogle()">Login With Google</button>
+</template>
+
+<script>
+import firebase from 'firebase/app';
+import 'firebase/auth';
+
+export default {
+  methods: {
+    signInWithGoogle() {
+      var authProvider = new firebase.auth.GoogleAuthProvider();
+      return firebase.auth().signInWithPopup(authProvider)
+    }
+  }
+};
+</script>
+
+<style language="scss">
+.login-button {
+  padding: 20px 36px;
+  font-size: 2rem;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #0365d6;
+  border-radius: 4px;
+  color: #fff;
+}
+</style>
