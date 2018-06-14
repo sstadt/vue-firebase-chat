@@ -21,7 +21,7 @@
 </template>
 
 <script>
-import firebase, { chatRef } from '../firebase'
+import firebase, { chatRef } from '../firebase';
 
 export default {
   data() {
@@ -43,7 +43,7 @@ export default {
   },
   methods: {
     logOut() {
-      firebase.auth().signOut()
+      firebase.auth().signOut();
     },
     addComment() {
       if (this.newMessage !== '') {
