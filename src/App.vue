@@ -1,27 +1,42 @@
 
 <template>
-  <div id="app">
-    <login></login>
-    <chat></chat>
-    <!-- <login v-if="!data.currentUser"></login>
-    <chat v-else></chat> -->
+  <div>
+    <Initialize/>
+    <ConversationContainer
+      v-for="id in convoIds"
+      :conversation="conversations[id]"
+      :id="id"
+      :key="id"
+    />
+    <!-- <div id="app">
+      <login v-if="!data.currentUser"></login>
+      <chat v-else></chat>
+    </div> -->
   </div>
 </template>
 
 <script>
-import Login from './components/Login.vue';
-import Chat from './components/Chat.vue';
+// import Login from './components/Login.vue';
+// import Chat from './components/Chat.vue';
+
+import Initialize from './components/Initialize.vue';
+import ConversationContainer from './components/ConversationContainer.vue';
+import { mapState } from 'vuex';
 
 export default {
-  components: {
-    login: Login,
-    chat: Chat
-  }
-}
+  computed: {
+    ...mapState({
+      conversations: state => state.conversations.all,
+      convoIds: state => state.conversations.allIds
+    })
+  },
+  components: { Initialize, ConversationContainer }
+  // components: { Login, Chat }
+};
 </script>
 
 <style lang="scss">
-#app {
+body {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

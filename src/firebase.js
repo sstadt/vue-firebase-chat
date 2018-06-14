@@ -15,6 +15,7 @@ var config = {
 var app = firebase.initializeApp(config);
 var db = app.database();
 var firebaseRef = db.ref();
+
 var chatRef = firebaseRef.child('chat');
 
-export { app, db, chatRef };
+export { app, chatRef };
