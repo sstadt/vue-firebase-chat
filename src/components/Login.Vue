@@ -1,16 +1,18 @@
 
 <template>
-  <button class="login-button" @click="signInWithGoogle()">Login With Google</button>
+  <button class="login-button" @click="login()">Login With Google</button>
 </template>
 
 <script>
 import { app } from '../firebase.js';
 
 export default {
+  created() {
+    this.$store.dispatch('user/init');
+  },
   methods: {
-    signInWithGoogle() {
-      var authProvider = new firebase.auth.GoogleAuthProvider();
-      return app.auth().signInWithPopup(authProvider);
+    login() {
+      this.$store.dispatch('user/login');
     }
   }
 };

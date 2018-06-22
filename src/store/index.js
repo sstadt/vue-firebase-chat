@@ -8,6 +8,7 @@ import firebase from 'firebase';
 import 'firebase/firestore';
 
 import users from './users';
+import user from './user';
 import conversations from './conversations';
 
 var config = {
@@ -19,15 +20,16 @@ var config = {
   messagingSenderId: "175017321265"
 };
 
-firebase.initializeApp(config);
+var app = firebase.initializeApp(config);
 
 Vue.use(Vuex);
 
 const state = {
+  app,
   db: firebase.firestore()
 };
 
 export default new Vuex.Store({
   state,
-  modules: { users, conversations }
+  modules: { user, users, conversations }
 });

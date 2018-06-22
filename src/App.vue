@@ -1,6 +1,8 @@
 
 <template>
   <div>
+    <p>current user: {{ currentUser.displayName }}</p>
+    <Login v-if="!currentUser.displayName" />
     <Initialize/>
     <ConversationContainer
       v-for="id in convoIds"
@@ -16,8 +18,8 @@
 </template>
 
 <script>
-// import Login from './components/Login.vue';
-// import Chat from './components/Chat.vue';
+import Login from './components/Login.vue';
+import Chat from './components/Chat.vue';
 
 import Initialize from './components/Initialize.vue';
 import ConversationContainer from './components/ConversationContainer.vue';
@@ -26,12 +28,12 @@ import { mapState } from 'vuex';
 export default {
   computed: {
     ...mapState({
+      currentUser: state => state.user.currentUser,
       conversations: state => state.conversations.all,
       convoIds: state => state.conversations.allIds
     })
   },
-  components: { Initialize, ConversationContainer }
-  // components: { Login, Chat }
+  components: { Login, Initialize, ConversationContainer }
 };
 </script>
 
