@@ -1,69 +1,56 @@
 
 <template>
-<div class="chat-wrapper">
-  <a href='#' @click="logOut()">SIGNOUT</a>
-  <div class="chat-frame">
-    <div v-for="item in messages" class="chat-message">
-      <img class="chat-message__avatar" :src="item.photo_url" />
-      <div class="chat-message__body">
-        <p class="chat-message__user">{{item.name}}</p>
-        <p class="chat-message__message">{{item.message}}</p>
+  <div class="chat-wrapper">
+    <a href='#' @click="logout()">SIGNOUT</a>
+    <div class="message-list">
+      <div v-for="message in messages" class="chat-message">
+        <img class="chat-message__avatar" :src="message.photo_url" />
+        <div class="chat-message__body">
+          <p class="chat-message__user">{{message.name}}</p>
+          <p class="chat-message__message">{{message.message}}</p>
+        </div>
       </div>
+      <form @submit.prevent="addMessage">
+        <input type="text" class="new-message" v-model="message" placeholder="Chat..." />
+      </form>
     </div>
-    <form @submit.prevent="addComment">
-      <div class="new-message">
-        <input type="text" v-model="newMessage" placeholder="Type and click send to chat" />
-        <button type="submit">Send</button>
-      </div>
-    </form>
   </div>
-</div>
 </template>
 
 <script>
-import { app, chatRef } from '../firebase';
+  import { mapState } from 'vuex';
 
-export default {
-  data() {
-    return {
-      newMessage: '',
-      loading: true
-    };
-  },
-  firebase: {
-    // can bind to either a direct Firebase reference or a query
-    anArray: chatRef,
-    // optionally provide the cancelCallback
-    cancelCallback: function () { },
-    // this is called once the data has been retrieved from firebase
-    readyCallback: function () { }
-  },
-  methods: {
-    logOut() {
-      app.auth().signOut();
+  export default {
+    data() {
+      return {
+        message: '',
+        loading: true
+      };
     },
-    addComment() {
-      if (this.newMessage !== '') {
-        chatRef.push({
-          message: this.newMessage.trim(),
-          name: this.getUserName(),
-          userId: this.getUserId(),
-          photo_url: this.getPhotoURL()
-        });
-        this.newMessage = "";
+    computed: {
+      ...mapState({
+        messages: state => state.messages.all,
+        currentUser: state => state.user.currentUser
+      })
+    },
+    methods: {
+      logout() {
+        this.$store.dispatch('users/logout');
+      },
+      addMessage() {
+        if (this.message !== '') {
+          console.log(this.message);
+          console.log(this.currentUser);
+          this.$store.dispatch('messages/send', {
+            username: this.currentUser.displayName,
+            image: this.currentUser.photoURL,
+            text: this.message
+          });
+          this.message = "";
+        }
       }
-    },
-    getUserId() {
-      return app.auth().currentUser.uid;
-    },
-    getUserName() {
-      return app.auth().currentUser.displayName;
-    },
-    getPhotoURL() {
-      return app.auth().currentUser.photoURL;
     }
   }
-}
 </script>
 
 <style>

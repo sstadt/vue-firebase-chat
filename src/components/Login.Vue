@@ -4,8 +4,6 @@
 </template>
 
 <script>
-import { app } from '../firebase.js';
-
 export default {
   created() {
     this.$store.dispatch('user/init');

@@ -2,16 +2,13 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import 'babel-polyfill';
-
-import firebase from 'firebase';
+import firebase from 'firebase/app';
 import 'firebase/firestore';
 
-import users from './users';
 import user from './user';
-import conversations from './conversations';
+import messages from './messages';
 
-var config = {
+const config = {
   apiKey: "AIzaSyCE_UcyTwnq0nCknK5Ew4rERStQe3Z1qCY",
   authDomain: "vuechat-9e5eb.firebaseapp.com",
   databaseURL: "https://vuechat-9e5eb.firebaseio.com",
@@ -20,16 +17,17 @@ var config = {
   messagingSenderId: "175017321265"
 };
 
-var app = firebase.initializeApp(config);
+const app = firebase.initializeApp(config);
+const db = firebase.firestore();
+const settings = { timestampsInSnapshots: true };
+
+db.settings(settings);
 
 Vue.use(Vuex);
 
-const state = {
-  app,
-  db: firebase.firestore()
-};
+const state = { app, db };
 
 export default new Vuex.Store({
   state,
-  modules: { user, users, conversations }
+  modules: { user, messages }
 });

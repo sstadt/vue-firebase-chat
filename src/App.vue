@@ -1,19 +1,8 @@
 
 <template>
   <div>
-    <p>current user: {{ currentUser.displayName }}</p>
     <Login v-if="!currentUser.displayName" />
-    <Initialize/>
-    <ConversationContainer
-      v-for="id in convoIds"
-      :conversation="conversations[id]"
-      :id="id"
-      :key="id"
-    />
-    <!-- <div id="app">
-      <login v-if="!data.currentUser"></login>
-      <chat v-else></chat>
-    </div> -->
+    <Chat v-else />
   </div>
 </template>
 
@@ -21,19 +10,18 @@
 import Login from './components/Login.vue';
 import Chat from './components/Chat.vue';
 
-import Initialize from './components/Initialize.vue';
-import ConversationContainer from './components/ConversationContainer.vue';
 import { mapState } from 'vuex';
 
 export default {
   computed: {
     ...mapState({
-      currentUser: state => state.user.currentUser,
-      conversations: state => state.conversations.all,
-      convoIds: state => state.conversations.allIds
+      currentUser: state => state.user.currentUser
     })
   },
-  components: { Login, Initialize, ConversationContainer }
+  components: { Login, Chat },
+  created() {
+    this.$store.dispatch('messages/get');
+  }
 };
 </script>
 
