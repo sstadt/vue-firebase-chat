@@ -7,10 +7,11 @@ const state = {
 
 const mutations = {
   SET_MESSAGES (state, { messages }) {
-    console.log(messages);
-    state.all = messages;
+    // console.log(messages.data());
+    // state.all = messages;
   },
-  ADD_MESSAGE (state, { message }) {
+  ADD_MESSAGE (state, message) {
+    console.log(message);
     state.all.push(message);
   }
 };
@@ -20,9 +21,8 @@ const actions = {
     let messagesRef = rootState.db.collection('messages');
     let messages = await messagesRef.get();
 
-    messages.forEach(message => console.log(message));
+    messages.forEach(message => commit('ADD_MESSAGE', message.data()));
     // commit('SET_MESSAGES', { messages });
-    // convos.forEach(conversation => commit('SET_MESSAGES', { messages }));
   },
   send ({ commit, rootState }, { username, image, text }) {
     let messagesRef = rootState.db.collection('messages');
