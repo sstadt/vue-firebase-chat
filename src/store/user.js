@@ -34,6 +34,4 @@ const actions = {
   }
 };
 
-export default {
-  namespaced: true, state, mutations, actions
-};
+export default { namespaced: true, state, mutations, actions };
