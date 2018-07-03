@@ -9,8 +9,8 @@
       <div v-for="message in messages" class="chat-message">
         <img class="chat-message__avatar" :src="message.image" />
         <div class="chat-message__body">
-          <p class="chat-message__user">{{message.username}}</p>
-          <p class="chat-message__message">{{message.text}}</p>
+          <p class="chat-message__user">{{ message.username }}</p>
+          <p class="chat-message__message">{{ message.text }}</p>
         </div>
       </div>
     </div>
@@ -24,6 +24,9 @@
   import { mapState } from 'vuex';
 
   export default {
+    created() {
+      this.$store.dispatch('messages/init');
+    },
     data() {
       return {
         message: '',
@@ -42,8 +45,6 @@
       },
       addMessage() {
         if (this.message !== '') {
-          console.log(this.message);
-          console.log(this.currentUser);
           this.$store.dispatch('messages/send', {
             username: this.currentUser.displayName,
             image: this.currentUser.photoURL,
@@ -84,12 +85,17 @@
 
   .message-list {
     flex-grow: 1;
+    overflow-y: auto;
   }
 
   .chat-header,
   .message-list,
   .chat-submit {
     width: 100%;
+  }
+
+  .chat-submit {
+    padding-top: 20px;
   }
 
   .chat-submit input {

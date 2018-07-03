@@ -1,33 +1,30 @@
 
-import Vue from 'vue';
-
 const state = {
   all: []
 };
 
 const mutations = {
-  SET_MESSAGES (state, { messages }) {
-    // console.log(messages.data());
-    // state.all = messages;
-  },
   ADD_MESSAGE (state, message) {
-    console.log(message);
     state.all.push(message);
   }
 };
 
 const actions = {
-  async get ({ commit, rootState }) {
+  init ({ commit, rootState }) {
     let messagesRef = rootState.db.collection('messages');
-    let messages = await messagesRef.get();
 
-    messages.forEach(message => commit('ADD_MESSAGE', message.data()));
-    // commit('SET_MESSAGES', { messages });
+    messagesRef.orderBy('created_on').onSnapshot((snapshot) => {
+      snapshot.docChanges().forEach((change) => {
+        if (change.type === 'added') {
+          commit('ADD_MESSAGE', { ...change.doc.data(), id: change.doc.id });
+        }
+      });
+    });
   },
   send ({ commit, rootState }, { username, image, text }) {
     let messagesRef = rootState.db.collection('messages');
 
-    messagesRef.add({ username, image, text })
+    messagesRef.add({ username, image, text, created_on: new Date() })
       .then(res => console.log('Message sent.', res))
       .catch(err => console.log('Error', err));
   }

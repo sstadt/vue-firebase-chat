@@ -18,10 +18,7 @@ export default {
       currentUser: state => state.user.currentUser
     })
   },
-  components: { Login, Chat },
-  created() {
-    this.$store.dispatch('messages/get');
-  }
+  components: { Login, Chat }
 };
 </script>
 
