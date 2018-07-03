@@ -9,13 +9,20 @@ const state = {
 const mutations = {
   SET_USER (state, { user }) {
     state.currentUser = user;
+  },
+  UNSET_USER () {
+    state.currentUser = {};
   }
 };
 
 const actions = {
   init ({ commit, rootState }) {
     rootState.app.auth().onAuthStateChanged((user) => {
-      commit('SET_USER', { user });
+      if (user) {
+        commit('SET_USER', { user });
+      } else {
+        commit('UNSET_USER');
+      }
     });
   },
   login ({ rootState }) {

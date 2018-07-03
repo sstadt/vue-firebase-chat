@@ -1,8 +1,8 @@
 
 <template>
   <div>
-    <Login v-if="!currentUser.displayName" />
-    <Chat v-else />
+    <Chat v-if="currentUser && currentUser.displayName" />
+    <Login v-else />
   </div>
 </template>
 

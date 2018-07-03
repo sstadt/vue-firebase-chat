@@ -3,7 +3,7 @@
   <div class="chat-wrapper">
     <div class="chat-header">
       <p>Welcome, {{ this.currentUser.displayName }}!</p>
-      <a href='#' @click="logout()">log out</a>
+      <a href="#" @click.prevent="logout()">log out</a>
     </div>
     <div class="message-list" ref="chatList">
       <div v-for="message in messages" class="chat-message">
@@ -49,7 +49,7 @@
     },
     methods: {
       logout() {
-        this.$store.dispatch('users/logout');
+        this.$store.dispatch('user/logout');
       },
       addMessage() {
         if (this.message !== '') {
