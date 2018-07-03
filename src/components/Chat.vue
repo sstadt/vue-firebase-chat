@@ -5,7 +5,7 @@
       <p>Welcome, {{ this.currentUser.displayName }}!</p>
       <a href='#' @click="logout()">log out</a>
     </div>
-    <div class="message-list">
+    <div class="message-list" ref="chatList">
       <div v-for="message in messages" class="chat-message">
         <img class="chat-message__avatar" :src="message.image" />
         <div class="chat-message__body">
@@ -21,6 +21,7 @@
 </template>
 
 <script>
+  import Vue from 'vue';
   import { mapState } from 'vuex';
 
   export default {
@@ -38,6 +39,13 @@
         messages: state => state.messages.all,
         currentUser: state => state.user.currentUser
       })
+    },
+    watch: {
+      messages() {
+        Vue.nextTick(() => {
+          this.$refs.chatList.scrollTop = this.$refs.chatList.scrollHeight;
+        });
+      }
     },
     methods: {
       logout() {
@@ -85,6 +93,8 @@
 
   .message-list {
     flex-grow: 1;
+    padding-right: 10px;
+    overflow-x: hidden;
     overflow-y: auto;
   }
 
@@ -107,6 +117,10 @@
   .chat-message {
     display: flex;
     padding-bottom: 20px;
+  }
+
+  .chat-message:last-child {
+    padding-bottom: 0;
   }
 
   .chat-message__avatar {
